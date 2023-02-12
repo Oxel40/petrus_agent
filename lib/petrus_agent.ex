@@ -1,62 +1,4 @@
 defmodule PetrusAgent do
-  @moduledoc """
-  Documentation for `PetrusAgent`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> PetrusAgent.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-end
-
-defmodule PetrusAgent.Client do
-  use WebSockex
-
-  def start_link(state) do
-    {code, pid} = WebSockex.start_link("ws://localhost:4000/test/websocket", __MODULE__, state)
-    # {code, pid} =
-    #   WebSockex.start_link("wss://flying-petrus.fly.io/test/websocket/", __MODULE__, state,
-    #     debug: [:trace]
-    #   )
-
-    case code do
-      :ok ->
-        {:ok, pid}
-
-      _ ->
-        IO.inspect(pid)
-        {code, pid}
-    end
-
-    # WebSockex.send_frame(pid, {:text, inspect state})
-    # {:ok, pid}
-  end
-
-  def handle_frame({:binary, _bin}, state) do
-    IO.puts("Received binary for printing")
-    {:ok, state}
-  end
-
-  def handle_frame({:text, "op-printer-status"}, state) do
-    IO.puts("Received binary for printing")
-    {:ok, state}
-  end
-
-  def handle_frame({type, msg}, state) do
-    IO.puts("Received Message - Type: #{inspect(type)} -- Message: #{inspect(msg)}")
-    # Process.sleep 1000
-    # state_ = state+1
-    # {:reply, {:text, inspect state_}, state_}
-    {:ok, state}
-  end
 end
 
 defmodule PetrusAgent.Application do
@@ -67,17 +9,15 @@ defmodule PetrusAgent.Application do
     Logger.info("starting")
 
     children = [
-      # {PetrusAgent.Client, 0}
-      # GenServer.start_link(PetrusAgent.GunClient, {'flying-petrus.fly.dev', 443, '/test/websocket'}
-      {PetrusAgent.GunClient, {'flying-petrus.fly.dev', 443, '/test/websocket'}}
-      # {PetrusAgent.GunClient, {'localhost', 4000, '/test/websocket'}}
+      {PetrusAgent.Client, {'flying-petrus.fly.dev', 443, '/test/websocket'}}
+      # {PetrusAgent.Client, {'localhost', 4000, '/test/websocket'}}
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, debug: [:trace])
   end
 end
 
-defmodule PetrusAgent.GunClient do
+defmodule PetrusAgent.Client do
   use GenServer
   require Logger
 
@@ -120,8 +60,6 @@ defmodule PetrusAgent.GunClient do
         state
       ) do
     Logger.info("Receved gun_down over #{inspect(protocol)}, reason: #{inspect(reason)}")
-    # Try reestablish websocket connection
-    # {:noreply, ws_upgrade(uri)}
     {:error, state}
   end
 
