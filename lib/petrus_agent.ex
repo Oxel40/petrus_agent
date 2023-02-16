@@ -9,8 +9,7 @@ defmodule PetrusAgent.Application do
     Logger.info("starting")
 
     children = [
-      {PetrusAgent.Client, {'flying-petrus.fly.dev', 443, '/test/websocket'}}
-      # {PetrusAgent.Client, {'localhost', 4000, '/test/websocket'}}
+      {PetrusAgent.Client, Application.fetch_env!(:petrus_agent, :url)}
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, debug: [:trace])
@@ -24,7 +23,12 @@ defmodule PetrusAgent.Client do
   def ws_upgrade({host, port, path}) do
     {:ok, gun_pid} = :gun.open(host, port, %{protocols: [:http]})
     {:ok, _protocol} = :gun.await_up(gun_pid)
-    stream_ref = :gun.ws_upgrade(gun_pid, path)
+
+    stream_ref =
+      :gun.ws_upgrade(gun_pid, path, [
+        {'x-printer-auth', secret()}
+      ])
+
     Logger.info("Trying to upgrade to websocket")
 
     %{uri: {host, port, path}, gun_pid: gun_pid, stream_ref: stream_ref}
@@ -36,6 +40,7 @@ defmodule PetrusAgent.Client do
 
   def init({host, port, path}) do
     Logger.info("Websocket client started")
+    Logger.info("Connecting to: #{inspect({host, port, path})}")
 
     {:ok, ws_upgrade({host, port, path})}
   end
@@ -96,5 +101,9 @@ defmodule PetrusAgent.Client do
   defp handle_frame({:text, "clear queue"}) do
     Logger.info("clearing queue: " <> inspect(System.cmd("cancel", ["-a"])))
     send(self(), {:send_status, 0})
+  end
+
+  defp secret do
+    Application.fetch_env!(:petrus_agent, :agent_secret)
   end
 end
