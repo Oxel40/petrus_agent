@@ -1,6 +1,5 @@
 #!/bin/sh -e
 
-[[ -f secrets ]]
 FILE=./secrets
 if [ ! -f "$FILE" ]; then
     echo "$FILE does not exist. Create this file and add the agent secret in the following format:"
