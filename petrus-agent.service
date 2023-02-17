@@ -1,14 +1,12 @@
 [Unit]
 Description=Petrus agent daemon
- 
+
 [Service]
 Type=simple
-User=username
-Group=groupname
-Restart=on-failure
+Restart=allways
 Environment=MIX_ENV=prod
 EnvironmentFile=/etc/petrus_agent/secrets
- 
+
 WorkingDirectory=/var/apps/petrus_agent
 
 ExecStart=/var/apps/petrus_agent/_build/prod/rel/petrus_agent/bin/petrus_agent start
