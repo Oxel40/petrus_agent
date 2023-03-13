@@ -1,9 +1,11 @@
 [Unit]
 Description=Petrus agent daemon
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
 Restart=allways
+RestartSec=3
 Environment=MIX_ENV=prod
 EnvironmentFile=/etc/petrus_agent/secrets
 
