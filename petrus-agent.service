@@ -4,7 +4,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Restart=allways
+Restart=always
 RestartSec=3
 Environment=MIX_ENV=prod
 EnvironmentFile=/etc/petrus_agent/secrets
