@@ -9,6 +9,7 @@ if [ ! -f "$FILE" ]; then
 	exit
 fi
 
+MIX_ENV=prod mix deps.get
 MIX_ENV=prod mix release
 sudo mkdir /etc/petrus_agent
 sudo cp secrets /etc/petrus_agent/
