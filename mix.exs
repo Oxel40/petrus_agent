@@ -22,7 +22,7 @@ defmodule PetrusAgent.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:gun, "~> 2.0.0"}
+      {:gun, "~> 2.0.1"}
     ]
   end
 end

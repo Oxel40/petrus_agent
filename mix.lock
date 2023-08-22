@@ -1,5 +1,5 @@
 %{
-  "cowlib": {:hex, :cowlib, "2.12.0", "58b73b75bee32295a3e2cb37cd73d7b41e8b0c9c9a235869e6bfcce3fc1a63aa", [:make, :rebar3], [], "hexpm", "fa8a335b7c61263317c6214676cfb8c448ae9c36bad3d98df9cb166265940fd1"},
-  "gun": {:hex, :gun, "2.0.0", "2326bc0fd6d9cf628419708270d6fe8b02b8d002cf992e4165a77d997b1defd0", [:make, :rebar3], [{:cowlib, "2.12.0", [hex: :cowlib, repo: "hexpm", optional: false]}], "hexpm", "6613cb7c62930dc8d58263c44dda72f8556346ba88358fc929dcbc5f76d04569"},
+  "cowlib": {:hex, :cowlib, "2.12.1", "a9fa9a625f1d2025fe6b462cb865881329b5caff8f1854d1cbc9f9533f00e1e1", [:make, :rebar3], [], "hexpm", "163b73f6367a7341b33c794c4e88e7dbfe6498ac42dcd69ef44c5bc5507c8db0"},
+  "gun": {:hex, :gun, "2.0.1", "160a9a5394800fcba41bc7e6d421295cf9a7894c2252c0678244948e3336ad73", [:make, :rebar3], [{:cowlib, "2.12.1", [hex: :cowlib, repo: "hexpm", optional: false]}], "hexpm", "a10bc8d6096b9502205022334f719cc9a08d9adcfbfc0dbee9ef31b56274a20b"},
   "websockex": {:hex, :websockex, "0.4.3", "92b7905769c79c6480c02daacaca2ddd49de936d912976a4d3c923723b647bf0", [:mix], [], "hexpm", "95f2e7072b85a3a4cc385602d42115b73ce0b74a9121d0d6dbbf557645ac53e4"},
 }

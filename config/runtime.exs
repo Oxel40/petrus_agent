@@ -14,7 +14,7 @@ url =
   if config_env() != :prod do
     {'localhost', 4000, '/printer-agent/websocket'}
   else
-    {'flying-petrus.fly.dev', 443, '/printer-agent/websocket'}
+    {'petrus.oxel.dev', 443, '/printer-agent/websocket'}
   end
 
 config :petrus_agent, agent_secret: agent_secret

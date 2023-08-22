@@ -8,6 +8,8 @@ defmodule PetrusAgent.Application do
   def start(_type, _args) do
     Logger.info("starting")
 
+    {:ok, _} = Application.ensure_all_started(:gun)
+
     children = [
       {PetrusAgent.Client, Application.fetch_env!(:petrus_agent, :url)}
     ]
@@ -21,16 +23,26 @@ defmodule PetrusAgent.Client do
   require Logger
 
   def ws_upgrade({host, port, path}) do
-    {:ok, gun_pid} = :gun.open(host, port, %{protocols: [:http]})
+    Logger.info("Open connection to #{host} on port #{port}")
+
+    {:ok, gun_pid} = :gun.open(host, port, %{tls_opts: [verify: :verify_none]})
+
+    gun_pid
+    |> :gun.info()
+    |> inspect()
+    |> Logger.info()
+
     {:ok, _protocol} = :gun.await_up(gun_pid)
+
+    Logger.info("Trying to upgrade to websocket at #{path}")
 
     stream_ref =
       :gun.ws_upgrade(gun_pid, path, [
-        {'x-printer-auth', secret()}
+        {~c"x-printer-auth", secret()}
       ])
 
-    Logger.info("Trying to upgrade to websocket")
-
+    Logger.info("Done")
+    
     %{uri: {host, port, path}, gun_pid: gun_pid, stream_ref: stream_ref}
   end
 
