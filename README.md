@@ -1,3 +1,7 @@
+# NOTE
+
+This repository has been merged into [datasektionen/petrus](https://github.com/datasektionen/petrus) and is considered outdated.
+
 # PetrusAgent
 
 **TODO: Add description**
